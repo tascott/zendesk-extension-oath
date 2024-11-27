@@ -8,19 +8,17 @@
             const accessToken = params.get('access_token');
             
             if (accessToken) {
-                // Store token in localStorage temporarily
-                localStorage.setItem('zendesk_token', accessToken);
-
-                console.log('access token done>')
+                // Redirect back to the extension's options page with the token
+                const extensionId = 'dfhhhlknhdcmgenfcdfmpoeegeepdiab'; // Your extension ID
+                const redirectUrl = `chrome-extension://${extensionId}/src/options/options.html?token=${accessToken}`;
                 
-                // Display success message
-                document.getElementById('status').textContent = 'Authentication successful! You can close this window.';
+                // Log for debugging
+                console.log('Token received:', accessToken);
+                console.log('Redirecting to:', redirectUrl);
                 
-                // Attempt to close window after a short delay
-                setTimeout(() => {
-                    window.close();
-                }, 2000);
+                window.location.href = redirectUrl;
             } else {
+                console.error('No access token found in URL');
                 document.getElementById('status').textContent = 'Authentication failed. No token received.';
             }
         });
