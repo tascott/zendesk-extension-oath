@@ -9,7 +9,7 @@
             
             if (accessToken) {
                 // Send message to the extension
-                chrome.runtime.sendMessage('YOUR_EXTENSION_ID', 
+                chrome.runtime.sendMessage('dfhhhlknhdcmgenfcdfmpoeegeepdiab', 
                     {type: 'OAUTH_TOKEN', token: accessToken},
                     () => {
                         window.close();
