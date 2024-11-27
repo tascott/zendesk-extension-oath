@@ -6,23 +6,28 @@
         window.addEventListener('load', () => {
             const params = new URLSearchParams(window.location.hash.slice(1));
             const accessToken = params.get('access_token');
-
-            console.log('test 1')
             
             if (accessToken) {
-                // Store token temporarily in localStorage
+                // Store token in localStorage temporarily
                 localStorage.setItem('zendesk_token', accessToken);
+
+                console.log('access token done 2>')
                 
-                // Redirect to chrome-extension URL
-                window.location.href = 'chrome-extension://dfhhhlknhdcmgenfcdfmpoeegeepdiab/src/options/options.html?token=' + accessToken;
+                // Display success message
+                document.getElementById('status').textContent = 'Authentication successful! You can close this window.';
+                
+                // Attempt to close window after a short delay
+                setTimeout(() => {
+                    window.close();
+                }, 2000);
             } else {
-                console.error('No access token found in URL');
+                document.getElementById('status').textContent = 'Authentication failed. No token received.';
             }
         });
     </script>
 </head>
 <body>
-    <h1>Authentication successful!</h1>
-    <p>Redirecting...</p>
+    <h1>Zendesk Authentication</h1>
+    <p id="status">Processing authentication...</p>
 </body>
 </html>
