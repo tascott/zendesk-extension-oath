@@ -8,17 +8,11 @@
             const accessToken = params.get('access_token');
             
             if (accessToken) {
-                // Get extension ID from URL parameter
-                const urlParams = new URLSearchParams(window.location.search);
-                const extensionId = urlParams.get('ext');
-                
-                if (!extensionId) {
-                    document.getElementById('status').textContent = 'Error: No extension ID provided. Please check the setup instructions.';
-                    return;
-                }
-
+                // Redirect back to the extension's options page with the token
+                const extensionId = 'hplhjdjkopnfopkibdgfmiedjebnloki'; // Your extension ID
                 const redirectUrl = `chrome-extension://${extensionId}/src/options/options.html?token=${accessToken}`;
                 
+                // Log for debugging
                 console.log('Token received:', accessToken);
                 console.log('Redirecting to:', redirectUrl);
                 
