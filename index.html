@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <title>OAuth Redirect</title>
@@ -27,5 +27,64 @@
 <body>
     <h1>Zendesk Authentication</h1>
     <p id="status">Processing authentication...</p>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OAuth Redirect</title>
+    <style>
+        .hidden { display: none; }
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input { padding: 5px; margin: 10px 0; }
+        button { padding: 5px 10px; }
+    </style>
+    <script>
+        function processAuth() {
+            const extensionId = document.getElementById('extensionId').value.trim();
+            if (!extensionId) {
+                alert('Please enter your extension ID');
+                return;
+            }
+
+            const params = new URLSearchParams(window.location.hash.slice(1));
+            const accessToken = params.get('access_token');
+            
+            if (accessToken) {
+                // Redirect back to the extension's options page with the token
+                const redirectUrl = `chrome-extension://${extensionId}/src/options/options.html?token=${accessToken}`;
+                
+                // Log for debugging
+                console.log('Token received:', accessToken);
+                console.log('Redirecting to:', redirectUrl);
+                
+                window.location.href = redirectUrl;
+            } else {
+                console.error('No access token found in URL');
+                document.getElementById('status').textContent = 'Authentication failed. No token received.';
+            }
+        }
+
+        window.addEventListener('load', () => {
+            // Show the ID input form if we have a token in the URL
+            if (window.location.hash.includes('access_token')) {
+                document.getElementById('idForm').classList.remove('hidden');
+                document.getElementById('status').textContent = 'Token received. Please enter your extension ID to complete authentication.';
+            } else {
+                document.getElementById('status').textContent = 'No authentication token found in URL.';
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Zendesk Authentication</h1>
+    <p id="status">Processing authentication...</p>
+    
+    <div id="idForm" class="hidden">
+        <p>Please enter your Chrome extension ID:</p>
+        <input type="text" id="extensionId" placeholder="Extension ID" />
+        <button onclick="processAuth()">Complete Authentication</button>
+        <p><small>You can find your extension ID in chrome://extensions with Developer Mode enabled.</small></p>
+    </div>
 </body>
 </html>
